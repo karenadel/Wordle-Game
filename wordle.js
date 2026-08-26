@@ -1,5 +1,7 @@
-let answer="CLICK";
-
+let answer="PLANT";
+let cntByRow = [0,0,0,0,0,0,0];
+let hashByRow = [null,null,null,null,null,null,null];
+let arr = [];
 
 function newGame() {
     const inputs = document.querySelectorAll(".inputfield");
@@ -8,6 +10,8 @@ function newGame() {
         input.style.backgroundColor = "";
         input.style.border = "";
     });
+    cntByRow.fill(0);
+    arr = [];
     game(1);
 }
 function game(ind){
@@ -18,49 +22,56 @@ function game(ind){
     for (let i = 0; i < answer.length; i++) {
         hash[answer.charCodeAt(i) - "A".charCodeAt(0)]++;
     }
+    hashByRow[ind] = hash;
+    arr = [];
 
     const inputs = document.querySelectorAll(".inputfield"+ind);
     inputs[0].focus();
-    let cnt=0;
+    if (inputs[0].dataset.bound) return; // NEW: don't attach a second set of listeners
+    inputs[0].dataset.bound = "true";    // NEW: mark this row as wired up
 
     inputs.forEach((input, index) => {
         input.addEventListener("input", () => {
             if (input.value.length === input.maxLength) {
                 if (index < inputs.length - 1) {
-                    cnt++;
+                    cntByRow[ind]++;
                     inputs[index + 1].focus();
                 }
-                if(index===inputs.length - 1) cnt++;
+                if(index===inputs.length - 1) cntByRow[ind]++;
             }
         });
         input.addEventListener("keydown",(event)=>{
-            if (event.key === "Backspace" && cnt>=1) {
-                    cnt--;
-                    inputs[cnt].focus();
+            if (event.key === "Backspace" && cntByRow[ind]>=1) {
+                    cntByRow[ind]--;
+                    inputs[cntByRow[ind]].focus();
                     //console.log(cnt);
                 }
         });
         input.addEventListener("keydown",(event)=>{
             console.log(event.key);
-            console.log(cnt);
+            console.log(cntByRow[ind]);
             if (event.key === "Enter") {
-                    if(cnt===5){
+                    if(cntByRow[ind]===5){
+                        let hash = hashByRow[ind];
                         let green=0;
-                        for(let i=0;i<=4;i++){
+                        for(let i=0;i<5;i++){
                             if(answer[i]===inputs[i].value.toUpperCase()){
                                 inputs[i].style.backgroundColor='#55b44d';
                                 inputs[i].style.border='2px solid #007233';
                                 hash[answer.charCodeAt(i) - 'A'.charCodeAt(0)]--;
                                 green++;
                             }
-                            else if(hash[inputs[i].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]>0){
-                                inputs[i].style.backgroundColor='#e1a733';
-                                inputs[i].style.border='2px solid #996704';
-                                hash[inputs[i].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]--;
+                            else arr.push(i);
+                        }
+                        for(let i=0;i<arr.length;i++){
+                            if(hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]>0){
+                                inputs[arr[i]].style.backgroundColor='#e1a733';
+                                inputs[arr[i]].style.border='2px solid #996704';
+                                hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]--;
                             }
                             else {
-                                inputs[i].style.backgroundColor='#5e5e60';
-                                inputs[i].style.border='2px solid #17171b';
+                                inputs[arr[i]].style.backgroundColor='#5e5e60';
+                                inputs[arr[i]].style.border='2px solid #17171b';
                             }
                         }
                         setTimeout(() => {
@@ -108,10 +119,11 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 ////////////////
-//// cnt is completely broken
+//// valid dectionary guesses only
 //// style alerts
 //// get new words from dictionary each new game
 //// add functionality to header buttons
 //// a new game landing screen
 //// store statistics
+//// keyboard keys greys after guesses
 ////////////////
