@@ -1,4 +1,4 @@
-let answer="PLANT";
+let answer="SHORE";
 let cntByRow = [0,0,0,0,0,0,0];
 let hashByRow = [null,null,null,null,null,null,null];
 let arr = [];
@@ -10,6 +10,11 @@ function newGame() {
         input.style.backgroundColor = "";
         input.style.border = "";
     });
+    const keys = document.querySelectorAll(".key");
+    keys.forEach(key=>{
+        key.style.backgroundColor = "";
+        key.style.border = "";
+    })
     cntByRow.fill(0);
     arr = [];
     game(1);
@@ -27,8 +32,8 @@ function game(ind){
 
     const inputs = document.querySelectorAll(".inputfield"+ind);
     inputs[0].focus();
-    if (inputs[0].dataset.bound) return; // NEW: don't attach a second set of listeners
-    inputs[0].dataset.bound = "true";    // NEW: mark this row as wired up
+    if (inputs[0].dataset.bound) return; 
+    inputs[0].dataset.bound = "true";    
 
     inputs.forEach((input, index) => {
         input.addEventListener("input", () => {
@@ -58,6 +63,9 @@ function game(ind){
                             if(answer[i]===inputs[i].value.toUpperCase()){
                                 inputs[i].style.backgroundColor='#55b44d';
                                 inputs[i].style.border='2px solid #007233';
+                                const key=document.querySelector(".key"+answer[i]);
+                                key.style.backgroundColor='#55b44d';
+                                key.style.border='2px solid #007233';
                                 hash[answer.charCodeAt(i) - 'A'.charCodeAt(0)]--;
                                 green++;
                             }
@@ -67,11 +75,17 @@ function game(ind){
                             if(hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]>0){
                                 inputs[arr[i]].style.backgroundColor='#e1a733';
                                 inputs[arr[i]].style.border='2px solid #996704';
+                                const key=document.querySelector(".key"+inputs[arr[i]].value.toUpperCase());
+                                key.style.backgroundColor='#e1a733';
+                                key.style.border='2px solid #996704';
                                 hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]--;
                             }
                             else {
                                 inputs[arr[i]].style.backgroundColor='#5e5e60';
                                 inputs[arr[i]].style.border='2px solid #17171b';
+                                const key=document.querySelector(".key"+inputs[arr[i]].value.toUpperCase());
+                                key.style.backgroundColor='#5e5e60';
+                                key.style.border='2px solid #17171b';
                             }
                         }
                         setTimeout(() => {
@@ -119,11 +133,11 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 ////////////////
-//// valid dectionary guesses only
-//// style alerts
-//// get new words from dictionary each new game
-//// add functionality to header buttons
+//// onscreen backspace doesnt backspace
 //// a new game landing screen
+//// valid dectionary guesses only
+//// get new words from dictionary each new game
+//// style alerts
+//// add functionality to header buttons (hints game modes, statistics etc)
 //// store statistics
-//// keyboard keys greys after guesses
 ////////////////
