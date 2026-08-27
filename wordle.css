@@ -87,3 +87,37 @@ body {
     background-color:  #e4e7ee;
     /* background-color:  #00d660; */
 }
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-8px); }
+    40%, 60% { transform: translateX(8px); }
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+#message {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background-color: rgb(202, 143, 189);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+
+    font-family: Arial;
+    font-weight: bold;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+#message.show {
+    opacity: 1;
+}

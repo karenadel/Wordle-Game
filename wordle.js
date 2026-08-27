@@ -3,6 +3,18 @@ let cntByRow = [0,0,0,0,0,0,0];
 let hashByRow = [null,null,null,null,null,null,null];
 let arr = [];
 
+const message = document.querySelector("#message");
+
+function showMessage(text) {
+    console.log(text);
+    message.innerHTML = text;
+    message.classList.add("show");
+
+    setTimeout(() => {
+        message.classList.remove("show");
+    }, 1500);
+}
+
 function newGame() {
     answer = WORDS[Math.floor(Math.random() * WORDS.length)];
     const inputs = document.querySelectorAll(".inputfield");
@@ -22,7 +34,7 @@ function newGame() {
 }
 function game(ind){
     console.log("game with index ="+ind);
-    if(ind>6) {alert("Better luck next time! The word was: "+answer);return;}
+    if(ind>6) {showMessage("Better luck next time! The word was: "+answer); return;}
 
     let hash = new Array(26).fill(0);
     for (let i = 0; i < answer.length; i++) {
@@ -92,14 +104,19 @@ function game(ind){
                         }
                         setTimeout(() => {
                             if (green === 5) {
-                                alert("Correct!");
+                                showMessage("Correct!");
                                 wonthegame=true;
                                 return;
                             }
                             game(ind + 1);
                         }, 300);//game logic will be added later
                     }
-                    else alert("Not enough letters");
+                    else {
+                        const row = document.querySelector(".guess" + ind);
+                        row.classList.add("shake");
+                        row.addEventListener("animationend", () => row.classList.remove("shake"), { once: true });
+                        showMessage("Not enough letters");
+                    }
                 }
         });
         
@@ -135,9 +152,8 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 //////////////// TODO /////////////////////////
-//// Animations
+//// Animations (tile flip for reveal)
 //// a new game landing screen
-//// style alerts
 //// add functionality to header buttons (hints, themes, game modes, statistics)
 //// store statistics
 //// valid dectionary guesses only
