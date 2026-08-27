@@ -49,6 +49,7 @@ function game(ind){
             if (event.key === "Backspace" && cntByRow[ind]>=1) {
                     cntByRow[ind]--;
                     inputs[cntByRow[ind]].focus();
+                    inputs[cntByRow[ind]].value = "";
                     //console.log(cnt);
                 }
         });
@@ -133,12 +134,11 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 //////////////// TODO /////////////////////////
-//// onscreen backspace doesnt backspace
 //// Animations
 //// a new game landing screen
 //// valid dectionary guesses only
 //// get new words from dictionary each new game
 //// style alerts
-//// add functionality to header buttons (hints game modes, statistics etc)
+//// add functionality to header buttons (hints, themes, game modes, statistics etc)
 //// store statistics
 //////////////////////////////////////////////
