@@ -17,6 +17,7 @@ function showMessage(text) {
 
 function newGame() {
     answer = WORDS[Math.floor(Math.random() * WORDS.length)];
+    console.log(answer);
     const inputs = document.querySelectorAll(".inputfield");
     inputs.forEach(input => {
         input.value = "";
@@ -153,10 +154,10 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 //////////////// TODO /////////////////////////
 //// Animations (tile flip for reveal)
-//// add functionality to header buttons (hints, themes, game modes)
+//// add functionality to header buttons (hints -> reveal a consonant and a vowel, themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
 //// store statistics, make statistics button work
 //// Daily streak
-//// valid dectionary guesses only
+//// valid dictionary guesses only
 //////////////////////////////////////////////
 
 //////// later we can use an api to fetch a new word each time a new game is started. For now, we can just hardcode the answer variable to a specific word.

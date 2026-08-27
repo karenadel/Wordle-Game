@@ -118,8 +118,8 @@
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get("new") === "true") {
-                newGame();
                 window.history.replaceState({}, document.title, window.location.pathname);
+                newGame();
             }
         };
         </script>
