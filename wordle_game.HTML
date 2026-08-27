@@ -10,7 +10,7 @@
             <button class="theme" title="Change Theme">Theme</button>
             <button class="difficulty">Select Mode</button>
             <button class="statistics">Statistics</button>
-            <button class="new-game" onclick=newGame();>New Game</button>
+            <button class="new-game" onclick="newGame();">New Game</button>
             <button class="hint" title="Hints">?</button>
             </div>
         </div>
@@ -114,5 +114,14 @@
 
         <script src="words.js"></script>
         <script src="wordle.js"></script>
+        <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("new") === "true") {
+                newGame();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        };
+        </script>
     </body>
 </html>
