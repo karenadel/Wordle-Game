@@ -88,17 +88,6 @@ body {
     /* background-color:  #00d660; */
 }
 
-@keyframes shake {
-    10%, 90% { transform: translateX(-2px); }
-    20%, 80% { transform: translateX(4px); }
-    30%, 50%, 70% { transform: translateX(-8px); }
-    40%, 60% { transform: translateX(8px); }
-}
-
-.shake {
-    animation: shake 0.4s;
-}
-
 #message {
     position: fixed;
     top: 80px;
@@ -121,3 +110,25 @@ body {
 #message.show {
     opacity: 1;
 }
+
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-8px); }
+    40%, 60% { transform: translateX(8px); }
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+/* @keyframes flip {
+    0%   { transform: rotateX(0deg); }
+    50%  { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+.flip {
+    animation: flip 0.5s ease;
+} */
