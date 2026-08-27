@@ -1,0 +1,28 @@
+body {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logo{
+    width: 100px;
+    object-fit:contain;
+    margin:8px;
+}
+.gameName{
+    font-family: "Jim Nightshade", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    margin:10px;
+}
+.startGame{
+    background-color: rgb(67, 39, 70);
+    color: white;
+    padding: 10px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: Arial;
+}

@@ -153,9 +153,9 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 //////////////// TODO /////////////////////////
 //// Animations (tile flip for reveal)
-//// a new game landing screen
 //// add functionality to header buttons (hints, themes, game modes)
-//// store statistics make statistics button work
+//// store statistics, make statistics button work
+//// Daily streak
 //// valid dectionary guesses only
 //////////////////////////////////////////////
 
