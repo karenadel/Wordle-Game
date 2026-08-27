@@ -1,9 +1,10 @@
-let answer="SHORE";
+let answer;
 let cntByRow = [0,0,0,0,0,0,0];
 let hashByRow = [null,null,null,null,null,null,null];
 let arr = [];
 
 function newGame() {
+    answer = WORDS[Math.floor(Math.random() * WORDS.length)];
     const inputs = document.querySelectorAll(".inputfield");
     inputs.forEach(input => {
         input.value = "";
@@ -136,9 +137,10 @@ document.querySelector(".enter").addEventListener("click", () => {
 //////////////// TODO /////////////////////////
 //// Animations
 //// a new game landing screen
-//// valid dectionary guesses only
-//// get new words from dictionary each new game
 //// style alerts
-//// add functionality to header buttons (hints, themes, game modes, statistics etc)
+//// add functionality to header buttons (hints, themes, game modes, statistics)
 //// store statistics
+//// valid dectionary guesses only
 //////////////////////////////////////////////
+
+//////// later we can use an api to fetch a new word each time a new game is started. For now, we can just hardcode the answer variable to a specific word.
