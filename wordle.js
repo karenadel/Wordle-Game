@@ -132,12 +132,13 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 
-////////////////
+//////////////// TODO /////////////////////////
 //// onscreen backspace doesnt backspace
+//// Animations
 //// a new game landing screen
 //// valid dectionary guesses only
 //// get new words from dictionary each new game
 //// style alerts
 //// add functionality to header buttons (hints game modes, statistics etc)
 //// store statistics
-////////////////
+//////////////////////////////////////////////
