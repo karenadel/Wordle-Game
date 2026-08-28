@@ -31,6 +31,18 @@ function newGame() {
     })
     cntByRow.fill(0);
     arr = [];
+
+    let div = document.querySelector(".consonant");
+    let p = div.querySelector("p");
+    if (p) {
+        p.remove();
+    }
+    let div2 = document.querySelector(".vowel");
+    let p2 = div2.querySelector("p");
+    if (p2) {
+        p2.remove();
+    }
+
     game(1);
 }
 function game(ind){
@@ -152,12 +164,66 @@ document.querySelector(".enter").addEventListener("click", () => {
     );
 });
 
+function showHint(){
+    const disp=document.querySelector(".hintDisplay");
+    console.log(disp);
+    disp.style.display="flex";
+}
+function closeHint(){
+    const disp=document.querySelector(".hintDisplay");
+    disp.style.display="none";
+}
 
+
+let gotC=false; let gotV=false;
+function showConsonant(){
+    if(gotC) return;
+    if(answer!==""){
+        let cons; let cb=false;
+        for(let i=0;i<5;i++){
+            if(!(answer[i]==='A'||answer[i]==='E'||answer[i]==='I'||answer[i]==='O'||answer[i]==='U')){
+                cb=true; cons=answer[i];
+            }
+            if(cb) break;
+        }
+        let container = document.querySelector(".consonant");
+        let p = document.createElement("p");
+        p.textContent = cons;
+        container.appendChild(p);
+        gotC=true;
+    }
+    // else{
+    //     let container = document.getElementById("consonant");
+    //     let p = document.createElement("p");
+    //     p.textContent = "No game started!";
+    //     container.appendChild(p);
+    // }
+}
+
+function showVowel(){
+    if(gotV) return;
+    let vow; let vb=false;
+    if(answer!==""){
+        for(let i=0;i<5;i++){
+            if(answer[i]==='A'||answer[i]==='E'||answer[i]==='I'||answer[i]==='O'||answer[i]==='U'){
+                vb=true; vow=answer[i];
+                console.log(vow);
+            }
+            if(vb) break;
+        }
+        let container = document.querySelector(".vowel");
+            let p = document.createElement("p");
+            p.textContent = vow;
+            container.appendChild(p);
+            gotV=true;
+    }
+
+}
 
 //////////////// TODO /////////////////////////
 //// keyboard input filtration
 //// Animations (tile flip for reveal)
-//// add functionality to header buttons (hints -> reveal a consonant and a vowel, themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
+//// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
 //// store statistics, make statistics button work
 //// Daily streak
 //// valid dictionary guesses only

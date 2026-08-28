@@ -6,12 +6,14 @@
     </head>
     <body>
         <div class="header">
-            <div class="actions">
+            <div class="stats">
             <button class="theme" title="Change Theme">Theme</button>
-            <button class="difficulty">Select Mode</button>
             <button class="statistics">Statistics</button>
+            </div>
+            <div class="actions">
+            <button class="difficulty">Select Mode</button>
             <button class="new-game" onclick="newGame();">New Game</button>
-            <button class="hint" title="Hints">?</button>
+            <button class="hint" title="Hints" onclick="showHint();">?</button>
             </div>
         </div>
         <div class="game">
@@ -108,6 +110,18 @@
         </div>
         
         <div id="message"></div>
+        <div class="hintDisplay">
+            <div class="container">
+                <p>Click for hints!</p>
+                <div class="consonant">
+                <a onclick="showConsonant();">Show consonant</a>
+                </div>
+                <div class="vowel">
+                <a onclick="showVowel();">Show vowel</a>
+                </div>
+                <button onclick="closeHint();">Back to Wordle</button>
+            </div>
+        </div>
 
 
 
