@@ -99,8 +99,10 @@ function game(ind){
                                 inputs[arr[i]].style.backgroundColor='#5e5e60';
                                 inputs[arr[i]].style.border='2px solid #17171b';
                                 const key=document.querySelector(".key"+inputs[arr[i]].value.toUpperCase());
-                                key.style.backgroundColor='#5e5e60';
-                                key.style.border='2px solid #17171b';
+                                if(key.style.backgroundColor!=='rgb(85, 180, 77)'){
+                                    key.style.backgroundColor='#5e5e60';
+                                    key.style.border='2px solid #17171b';
+                                }
                             }
                         }
                         setTimeout(() => {
@@ -153,6 +155,7 @@ document.querySelector(".enter").addEventListener("click", () => {
 
 
 //////////////// TODO /////////////////////////
+//// keyboard input filtration
 //// Animations (tile flip for reveal)
 //// add functionality to header buttons (hints -> reveal a consonant and a vowel, themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
 //// store statistics, make statistics button work
