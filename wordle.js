@@ -63,6 +63,7 @@ function game(ind){
 
     inputs.forEach((input, index) => {
         input.addEventListener("input", () => {
+            input.value = input.value.replace(/[^a-zA-Z]/g, "");
             if (input.value.length === input.maxLength) {
                 if (index < inputs.length - 1) {
                     cntByRow[ind]++;
@@ -79,60 +80,69 @@ function game(ind){
                     //console.log(cnt);
                 }
         });
+        // 
         input.addEventListener("keydown",(event)=>{
             console.log(event.key);
             console.log(cntByRow[ind]);
             if (event.key === "Enter") {
-                    if(cntByRow[ind]===5){
-                        let hash = hashByRow[ind];
-                        let green=0;
-                        for(let i=0;i<5;i++){
-                            if(answer[i]===inputs[i].value.toUpperCase()){
-                                inputs[i].style.backgroundColor='#55b44d';
-                                inputs[i].style.border='2px solid #007233';
-                                const key=document.querySelector(".key"+answer[i]);
-                                key.style.backgroundColor='#55b44d';
-                                key.style.border='2px solid #007233';
-                                hash[answer.charCodeAt(i) - 'A'.charCodeAt(0)]--;
-                                green++;
-                            }
-                            else arr.push(i);
+                if(cntByRow[ind]===5){
+                    let hash = hashByRow[ind];
+                    let green=0;
+                    let colors = [];
+
+                    for (let i = 0; i < 5; i++) {
+                        if (answer[i] === inputs[i].value.toUpperCase()) {
+                            colors[i] = { bg: '#55b44d', border: '2px solid #007233', letter: answer[i] };
+                            hash[answer.charCodeAt(i) - 'A'.charCodeAt(0)]--;
+                            green++;
+                        } else arr.push(i);
+                    }
+
+                    for (let i = 0; i < arr.length; i++) {
+                        const idx = arr[i];
+                        const letter = inputs[idx].value.toUpperCase();
+                        if (hash[letter.charCodeAt(0) - "A".charCodeAt(0)] > 0) {
+                            colors[idx] = { bg: '#e1a733', border: '2px solid #996704', letter };
+                            hash[letter.charCodeAt(0) - "A".charCodeAt(0)]--;
+                        } else {
+                            colors[idx] = { bg: '#5e5e60', border: '2px solid #17171b', letter };
                         }
-                        for(let i=0;i<arr.length;i++){
-                            if(hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]>0){
-                                inputs[arr[i]].style.backgroundColor='#e1a733';
-                                inputs[arr[i]].style.border='2px solid #996704';
-                                const key=document.querySelector(".key"+inputs[arr[i]].value.toUpperCase());
-                                key.style.backgroundColor='#e1a733';
-                                key.style.border='2px solid #996704';
-                                hash[inputs[arr[i]].value.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)]--;
-                            }
-                            else {
-                                inputs[arr[i]].style.backgroundColor='#5e5e60';
-                                inputs[arr[i]].style.border='2px solid #17171b';
-                                const key=document.querySelector(".key"+inputs[arr[i]].value.toUpperCase());
-                                if(key.style.backgroundColor!=='rgb(85, 180, 77)'){
-                                    key.style.backgroundColor='#5e5e60';
-                                    key.style.border='2px solid #17171b';
-                                }
-                            }
-                        }
+                    }
+
+                    const flipDuration = 500; // must match CSS animation duration
+                    const stagger = 300;      // delay between each tile starting its flip
+
+                    for (let i = 0; i < 5; i++) {
                         setTimeout(() => {
-                            if (green === 5) {
-                                showMessage("Correct!");
-                                wonthegame=true;
-                                return;
-                            }
-                            game(ind + 1);
-                        }, 300);//game logic will be added later
+                            inputs[i].classList.add("flip");
+                            setTimeout(() => {
+                                inputs[i].style.backgroundColor = colors[i].bg;
+                                inputs[i].style.border = colors[i].border;
+                                const key = document.querySelector(".key" + colors[i].letter);
+                                if (colors[i].bg === '#55b44d' || key.style.backgroundColor !== 'rgb(85, 180, 77)') {
+                                    key.style.backgroundColor = colors[i].bg;
+                                    key.style.border = colors[i].border;
+                                }
+                            }, flipDuration / 2); // swap color when tile is edge-on
+                        }, i * stagger);
                     }
-                    else {
-                        const row = document.querySelector(".guess" + ind);
-                        row.classList.add("shake");
-                        row.addEventListener("animationend", () => row.classList.remove("shake"), { once: true });
-                        showMessage("Not enough letters");
-                    }
+
+                    setTimeout(() => {
+                        if (green === 5) {
+                            showMessage("Correct!");
+                            wonthegame = true;
+                            return;
+                        }
+                        game(ind + 1);
+                    }, 4 * stagger + flipDuration + 100);
                 }
+                else {
+                    const row = document.querySelector(".guess" + ind);
+                    row.classList.add("shake");
+                    row.addEventListener("animationend", () => row.classList.remove("shake"), { once: true });
+                    showMessage("Not enough letters");
+                }
+            }
         });
         
     });
@@ -221,11 +231,8 @@ function showVowel(){
 }
 
 //////////////// TODO /////////////////////////
-//// keyboard input filtration
-//// Animations (tile flip for reveal)
 //// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
-//// store statistics, make statistics button work
-//// Daily streak
+//// store statistics, make statistics button work, Daily streak
 //// valid dictionary guesses only
 //////////////////////////////////////////////
 

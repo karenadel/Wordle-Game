@@ -194,12 +194,23 @@ body {
     animation: shake 0.4s;
 }
 
-/* @keyframes flip {
+
+
+
+.inputfield {
+    transform-style: preserve-3d;
+}
+
+.guess1, .guess2, .guess3, .guess4, .guess5, .guess6 {
+    perspective: 800px; /* gives the flip some depth */
+}
+
+.inputfield.flip {
+    animation: flip 0.5s ease forwards;
+}
+
+@keyframes flip {
     0%   { transform: rotateX(0deg); }
     50%  { transform: rotateX(90deg); }
     100% { transform: rotateX(0deg); }
 }
-
-.flip {
-    animation: flip 0.5s ease;
-} */
