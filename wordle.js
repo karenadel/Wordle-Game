@@ -287,7 +287,8 @@ function ExitMode(){
 
 
 //////////////// TODO /////////////////////////
-//// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> staircase, checkerboard, very hard(forcing greens in place))
+//// add game modes -> checkerboard, very hard(forcing greens in place 
+//// add 3 themes
 //// store statistics, make statistics button work, Daily streak
 //// add a choose number of guesses option (3-10)
 //// add a choose number of letters option (3-10)
