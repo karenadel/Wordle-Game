@@ -5,6 +5,10 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.guesses{
+    position: relative;
+}
 .inputfield{
     width: 48px;
     height: 48px;
@@ -213,4 +217,31 @@ body {
     0%   { transform: rotateX(0deg); }
     50%  { transform: rotateX(90deg); }
     100% { transform: rotateX(0deg); }
+}
+
+.box{
+    background-color: red;
+    height:56px;
+    width:56px;
+    margin:5px;
+    margin-bottom:0px;
+    margin-right:0;
+    /* margin-left: 0; */
+}
+.staircase{
+    position: absolute;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:end;
+    row-gap: 2px;
+    
+    top: 0px;
+    left: -2px;
+    z-index:2;
+}
+
+.box-row{
+    display: flex;
+    column-gap: 5px;
 }
