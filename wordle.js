@@ -239,9 +239,12 @@ function showVowel(){
 }
 
 //////////////// TODO /////////////////////////
-//// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> hard 5 guesses, very hard(forcing greens in place))
+//// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> staircase, checkerboard, very hard(forcing greens in place))
 //// store statistics, make statistics button work, Daily streak
+//// add a choose number of guesses option (3-10)
+//// add a choose number of letters option (3-10)
 //// valid dictionary guesses only
 //////////////////////////////////////////////
 
-//////// later we can use an api to fetch a new word each time a new game is started. For now, we can just hardcode the answer variable to a specific word.
+
+//////// later we can store session using cookies or local storage to keep track of the number of games played, won, lost, and the current streak. We can also store the last played word to prevent repetition.
