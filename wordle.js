@@ -2,6 +2,7 @@ let answer;
 let cntByRow = [0,0,0,0,0,0,0];
 let hashByRow = [null,null,null,null,null,null,null];
 let arr = [];
+let gotC=false; let gotV=false;
 
 const message = document.querySelector("#message");
 
@@ -16,6 +17,7 @@ function showMessage(text) {
 }
 
 function newGame() {
+    gotC=false; gotV=false;
     answer = WORDS[Math.floor(Math.random() * WORDS.length)];
     console.log(answer);
     const inputs = document.querySelectorAll(".inputfield");
@@ -185,14 +187,17 @@ function closeHint(){
 }
 
 
-let gotC=false; let gotV=false;
+
 function showConsonant(){
     if(gotC) return;
     if(answer!==""){
+        let answeranswer=answer+answer;
+        let i = Math.floor(Math.random() * 5);;
+        let x=i;
         let cons; let cb=false;
-        for(let i=0;i<5;i++){
-            if(!(answer[i]==='A'||answer[i]==='E'||answer[i]==='I'||answer[i]==='O'||answer[i]==='U')){
-                cb=true; cons=answer[i];
+        for(;i<(5+x);i++){
+            if(!(answeranswer[i]==='A'||answeranswer[i]==='E'||answeranswer[i]==='I'||answeranswer[i]==='O'||answeranswer[i]==='U')){
+                cb=true; cons=answeranswer[i];
             }
             if(cb) break;
         }
@@ -214,9 +219,12 @@ function showVowel(){
     if(gotV) return;
     let vow; let vb=false;
     if(answer!==""){
-        for(let i=0;i<5;i++){
-            if(answer[i]==='A'||answer[i]==='E'||answer[i]==='I'||answer[i]==='O'||answer[i]==='U'){
-                vb=true; vow=answer[i];
+        let i = Math.floor(Math.random() * 5);;
+        let x=i;
+        let answeranswer=answer+answer;
+        for(;i<(5+x);i++){
+            if(answeranswer[i]==='A'||answeranswer[i]==='E'||answeranswer[i]==='I'||answeranswer[i]==='O'||answeranswer[i]==='U'){
+                vb=true; vow=answeranswer[i];
                 console.log(vow);
             }
             if(vb) break;
