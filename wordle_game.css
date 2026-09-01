@@ -35,6 +35,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap:2px;
+    opacity:1;
 }
 .key-row {
     display: flex;
