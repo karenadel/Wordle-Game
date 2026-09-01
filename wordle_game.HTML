@@ -11,7 +11,7 @@
             <button class="statistics">Statistics</button>
             </div>
             <div class="actions">
-            <button class="difficulty">Select Mode</button>
+            <button class="difficulty" onclick="selectMode();">Select Mode</button>
             <button class="new-game" onclick="newGame();">New Game</button>
             <button class="hint" title="Hints" onclick="showHint();">?</button>
             </div>
@@ -123,7 +123,10 @@
             <footer>Made by Kero</footer>
         </div>
         
+        <!--message container-->
         <div id="message"></div>
+
+        <!--hint container-->
         <div class="hintDisplay">
             <div class="container">
                 <p>Click for hints!</p>
@@ -137,8 +140,19 @@
             </div>
         </div>
 
-        
+        <!--statistics container-->
 
+        <!--modes container-->
+        <div class="modedisplay">
+            <div class="modecontainer">
+                <p>Select a game mode!</p>
+                <div class="staircaseoptn">
+                    <button class="staircasebtn" onclick="ModeShape(1);">Staircase</button>
+                </div>
+
+                <a class="exit" onclick="ExitMode()">exit current mode?</a>
+            </div>
+        </div>
 
 
 

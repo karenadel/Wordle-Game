@@ -3,7 +3,7 @@ let cntByRow = [0,0,0,0,0,0,0];
 let hashByRow = [null,null,null,null,null,null,null];
 let arr = [];
 let gotC=false; let gotV=false;
-
+let mode=0;
 const message = document.querySelector("#message");
 
 function showMessage(text) {
@@ -15,6 +15,8 @@ function showMessage(text) {
         message.classList.remove("show");
     }, 1500);
 }
+
+
 
 function newGame() {
     gotC=false; gotV=false;
@@ -181,6 +183,16 @@ function showHint(){
     console.log(disp);
     disp.style.display="flex";
 }
+function selectMode(){
+    const disp=document.querySelector(".modedisplay");
+    console.log(disp);
+    disp.style.display="flex";
+    disp.addEventListener("click", function(event){
+        if (event.target === disp) {
+            disp.style.display = "none";
+        }
+    });
+}
 function closeHint(){
     const disp=document.querySelector(".hintDisplay");
     disp.style.display="none";
@@ -237,6 +249,42 @@ function showVowel(){
     }
 
 }
+
+
+
+function ModeShape(shape){
+    const disp=document.querySelector(".modedisplay");
+    disp.style.display="none";
+
+    if(shape===1){
+        console.log("staircase");
+        const figure=document.querySelectorAll(".box-row");
+        
+        figure.forEach(function(fig){fig.style.display="flex";});
+
+        const keyb=document.querySelector(".keyboard");
+        keyb.style.opacity = "0";
+        keyb.style.pointerEvents = "none";
+        mode=1;
+    }
+}
+
+function ExitMode(){
+    const disp=document.querySelector(".modedisplay");
+    disp.style.display="none";
+    if(mode===1){
+        const keyb=document.querySelector(".keyboard");
+        keyb.style.opacity = "1";
+        keyb.style.pointerEvents = "auto";
+
+        const figure=document.querySelectorAll(".box-row");
+        figure.forEach(function(fig){fig.style.display="none";});
+    }
+}
+
+
+
+
 
 //////////////// TODO /////////////////////////
 //// add functionality to header buttons (themes -> 3 total themes pure css, game modes -> staircase, checkerboard, very hard(forcing greens in place))

@@ -11,9 +11,12 @@ body {
     margin:8px;
 }
 .gameName{
-    font-family: "Jim Nightshade", cursive;
+
+    font-family: "Cherry Cream Soda", system-ui;
     font-weight: 400;
     font-style: normal;
+
+
     font-size: 40px;
     margin:10px;
 }
