@@ -256,6 +256,7 @@ function ModeShape(shape){
     const disp=document.querySelector(".modedisplay");
     disp.style.display="none";
 
+    ExitMode();
     if(shape===1){
         console.log("staircase");
         const figure=document.querySelectorAll(".box-row");
@@ -266,6 +267,19 @@ function ModeShape(shape){
         keyb.style.opacity = "0";
         keyb.style.pointerEvents = "none";
         mode=1;
+    }
+    else if(shape===2){
+        console.log("checkboard");
+        const figure1=document.querySelectorAll(".row-3");
+        const figure2=document.querySelectorAll(".row-2");
+        
+        figure1.forEach(function(fig){fig.style.display="contents";});
+        figure2.forEach(function(fig){fig.style.display="contents";});
+
+        const keyb=document.querySelector(".keyboard");
+        keyb.style.opacity = "0";
+        keyb.style.pointerEvents = "none";
+        mode=2;
     }
 }
 
@@ -278,6 +292,14 @@ function ExitMode(){
         keyb.style.pointerEvents = "auto";
 
         const figure=document.querySelectorAll(".box-row");
+        figure.forEach(function(fig){fig.style.display="none";});
+    }
+    else if(mode===2){
+        const keyb=document.querySelector(".keyboard");
+        keyb.style.opacity = "1";
+        keyb.style.pointerEvents = "auto";
+
+        const figure=document.querySelectorAll(".checkboard .checkbox");
         figure.forEach(function(fig){fig.style.display="none";});
     }
 }
