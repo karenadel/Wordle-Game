@@ -20,7 +20,7 @@ function showMessage(text) {
 
 function newGame() {
     gotC=false; gotV=false;
-    answer = WORDS[Math.floor(Math.random() * WORDS.length)];
+    answer = WORDS5[Math.floor(Math.random() * WORDS5.length)];
     console.log(answer);
     const inputs = document.querySelectorAll(".inputfield");
     inputs.forEach(input => {
