@@ -309,11 +309,9 @@ function ExitMode(){
 
 
 //////////////// TODO /////////////////////////
-//// add game modes -> very hard(forcing greens in place 
+//// add game modes finish
 //// add 3 themes
-//// store statistics, make statistics button work, Daily streak
-//// add a choose number of guesses option (3-10)
-//// add a choose number of letters option (3-10)
+//// store statistics, make statistics button work, Daily strea
 //// valid dictionary guesses only
 //////////////////////////////////////////////
 
