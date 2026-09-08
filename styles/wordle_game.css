@@ -206,15 +206,19 @@ body {
     a:hover{
         text-decoration: none;
     }
+    label{
+        margin: 5px;
+        font-family: Arial;
+    }
 }
 
-.staircaseoptn,.checkboardoptn {
+.staircaseoptn,.checkboardoptn,.superhardoptn {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.staircasebtn,.checkboardbtn {
+.staircasebtn,.checkboardbtn,.superhardbtn {
     margin-top: 0px;
     background-color: #444;
     color: #fee9fb;
@@ -222,7 +226,7 @@ body {
     cursor: pointer;
     padding: 8px;
 }
-.checkboardbtn{
+.checkboardbtn,.superhardbtn {
     margin-top: 5px;
 }
 
