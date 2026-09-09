@@ -55,14 +55,70 @@ function pickAnswer() {
 // ---- NEW: build the guess grid dynamically inside #guessesContainer ----
 // NOTE: this only touches #guessesContainer, NOT .staircase / .checkboard,
 // so the pattern modes are never wiped out by this.
+// ---- NEW: measure the REAL rendered input grid and force the staircase /
+// checkboard overlays to match it exactly (size, gaps, position), instead of
+// relying on hand-tuned pixel guesses that drift whenever the layout changes.
+function syncPatternGeometry(){
+    const guessesEl = document.querySelector(".guesses");
+    const row1Inputs = document.querySelectorAll(".inputfield1");
+    const row2Inputs = document.querySelectorAll(".inputfield2");
+    if(!guessesEl || !row1Inputs.length) return;
+
+    const guessesRect = guessesEl.getBoundingClientRect();
+    const r0 = row1Inputs[0].getBoundingClientRect();
+    const r1 = row1Inputs.length > 1 ? row1Inputs[1].getBoundingClientRect() : null;
+
+    const cellSize = r0.width; // actual rendered width of one input (border-box)
+    const colGap = r1 ? (r1.left - r0.right) : 0; // actual gap between adjacent inputs
+
+    let rowGap = 0;
+    if (row2Inputs.length){
+        const r0b = row2Inputs[0].getBoundingClientRect();
+        rowGap = r0b.top - r0.bottom; // actual gap between row1 and row2
+    }
+
+    // position relative to .guesses (the positioned ancestor both overlays use)
+    const offsetLeft = r0.left - guessesRect.left;
+    const offsetTop = r0.top - guessesRect.top;
+
+    // ---- staircase ----
+    const staircase = document.querySelector(".staircase");
+    if (staircase){
+        staircase.style.top = offsetTop + "px";
+        staircase.style.left = offsetLeft + "px";
+        staircase.style.rowGap = rowGap + "px";
+
+        document.querySelectorAll(".staircase .box").forEach(box => {
+            box.style.width = cellSize + "px";
+            box.style.height = cellSize + "px";
+            box.style.margin = "0";
+        });
+        document.querySelectorAll(".staircase .box-row").forEach(row => {
+            row.style.columnGap = colGap + "px";
+        });
+    }
+
+    // ---- checkboard ----
+    const checkboard = document.querySelector(".checkboard");
+    if (checkboard){
+        checkboard.style.top = offsetTop + "px";
+        checkboard.style.left = offsetLeft + "px";
+        checkboard.style.gridTemplateColumns = `repeat(${config.numLetters}, ${cellSize + colGap}px)`;
+        checkboard.style.gridTemplateRows = `repeat(${config.numGuesses}, ${cellSize + rowGap}px)`;
+
+        document.querySelectorAll(".checkboard .checkbox").forEach(cb => {
+            cb.style.width = cellSize + "px";
+            cb.style.height = cellSize + "px";
+        });
+    }
+}
+
 function buildGrid() {
     const container = document.getElementById("guessesContainer");
     container.innerHTML = "";
     for (let row = 1; row <= config.numGuesses; row++) {
         const rowDiv = document.createElement("div");
         rowDiv.className = `guess${row}`;
-        rowDiv.style.display = "grid";
-        rowDiv.style.gridTemplateColumns = `repeat(${config.numLetters}, 1fr)`;
         for (let col = 0; col < config.numLetters; col++) {
             const input = document.createElement("input");
             input.id = `let${col + 1}g${row}`;
@@ -75,6 +131,9 @@ function buildGrid() {
         }
         container.appendChild(rowDiv);
     }
+
+    // ---- NEW: re-measure and re-align the pattern overlays to this grid ----
+    syncPatternGeometry();
 }
 
 function newGame() {
@@ -357,8 +416,9 @@ function ModeShape(shape){
         keyb.style.opacity = "0";
         keyb.style.pointerEvents = "none";
 
-        // ---- NEW: hide the standard grid while a pattern mode is active ----
-        document.getElementById("guessesContainer").style.display = "none";
+        // NOTE: guessesContainer stays visible - .staircase is an absolutely
+        // positioned overlay (pointer-events:none) that sits on top of the
+        // real inputs so typing still works underneath the shape.
         mode=1;
     }
     else if(shape===2){
@@ -373,8 +433,9 @@ function ModeShape(shape){
         keyb.style.opacity = "0";
         keyb.style.pointerEvents = "none";
 
-        // ---- NEW: hide the standard grid while a pattern mode is active ----
-        document.getElementById("guessesContainer").style.display = "none";
+        // NOTE: guessesContainer stays visible - .checkboard is an absolutely
+        // positioned overlay (pointer-events:none) that sits on top of the
+        // real inputs so typing still works underneath the shape.
         mode=2;
     }
 }
@@ -389,9 +450,6 @@ function ExitMode(){
 
         const figure=document.querySelectorAll(".box-row");
         figure.forEach(function(fig){fig.style.display="none";});
-
-        // ---- NEW: restore the standard grid ----
-        document.getElementById("guessesContainer").style.display = "";
     }
     else if(mode===2){
         const keyb=document.querySelector(".keyboard");
@@ -400,9 +458,6 @@ function ExitMode(){
 
         const figure=document.querySelectorAll(".checkboard .checkbox");
         figure.forEach(function(fig){fig.style.display="none";});
-
-        // ---- NEW: restore the standard grid ----
-        document.getElementById("guessesContainer").style.display = "";
     }
     mode = 0;
 }
@@ -423,3 +478,4 @@ function ExitMode(){
 
 // ---- NEW: kick off with default 5x6 tracking arrays sized before first newGame() call ----
 applySettings(config.numLetters, config.numGuesses);
+buildGrid();

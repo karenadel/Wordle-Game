@@ -13,7 +13,7 @@ body {
     width: 48px;
     height: 48px;
     margin: 6px;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     margin-left: 3px;
     margin-right: 3px;
     caret-color: transparent;
@@ -363,4 +363,28 @@ body {
 }
 .checkboard .row-3:nth-child(5) .checkbox:nth-child(3) {
     grid-column: 5;
+}
+
+.staircasebtn:hover {
+    background-color: #5a5a5a;
+}
+.checkboardbtn:hover {
+    background-color: #5a5a5a;
+}
+    
+.applysettings {
+    margin-top: 15px;
+    background-color: #444;
+    color: #fee9fb;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: Arial;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.applysettings:hover {
+    background-color: #5a5a5a;
 }
