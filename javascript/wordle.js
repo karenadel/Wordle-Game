@@ -1,10 +1,13 @@
 let answer;
-let cntByRow = [0,0,0,0,0,0,0];
-let hashByRow = [null,null,null,null,null,null,null];
+let cntByRow = [];
+let hashByRow = [];
 let arr = [];
 let gotC=false; let gotV=false;
 let mode=0;
 const message = document.querySelector("#message");
+
+// ---- NEW: config object driving grid size ----
+let config = { numLetters: 5, numGuesses: 6 };
 
 function showMessage(text) {
     console.log(text);
@@ -16,12 +19,72 @@ function showMessage(text) {
     }, 1500);
 }
 
+// ---- NEW: apply numLetters/numGuesses and size the tracking arrays ----
+function applySettings(numLetters, numGuesses) {
+    config.numLetters = numLetters;
+    config.numGuesses = numGuesses;
+    cntByRow = new Array(numGuesses + 1).fill(0);
+    hashByRow = new Array(numGuesses + 1).fill(null);
+}
 
+// ---- NEW: pick the right word list based on numLetters ----
+// NOTE: words3.js..words10.js declare their arrays with const/let, which does
+// NOT attach them to window, so window["WORDS"+n] would fail. Referencing the
+// identifiers directly here works because they're loaded as global <script>
+// tags before wordle.js, so they're in scope as regular lexical bindings.
+const WORD_LISTS = {
+    3: WORDS3,
+    4: WORDS4,
+    5: WORDS5,
+    6: WORDS6,
+    7: WORDS7,
+    8: WORDS8,
+    9: WORDS9,
+    10: WORDS10
+};
+
+function pickAnswer() {
+    const list = WORD_LISTS[config.numLetters];
+    if (!list || list.length === 0) {
+        console.error("No word list found for length " + config.numLetters);
+        return "";
+    }
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+// ---- NEW: build the guess grid dynamically inside #guessesContainer ----
+// NOTE: this only touches #guessesContainer, NOT .staircase / .checkboard,
+// so the pattern modes are never wiped out by this.
+function buildGrid() {
+    const container = document.getElementById("guessesContainer");
+    container.innerHTML = "";
+    for (let row = 1; row <= config.numGuesses; row++) {
+        const rowDiv = document.createElement("div");
+        rowDiv.className = `guess${row}`;
+        rowDiv.style.display = "grid";
+        rowDiv.style.gridTemplateColumns = `repeat(${config.numLetters}, 1fr)`;
+        for (let col = 0; col < config.numLetters; col++) {
+            const input = document.createElement("input");
+            input.id = `let${col + 1}g${row}`;
+            input.className = `inputfield inputfield${row}`;
+            input.type = "text";
+            input.maxLength = 1;
+            input.dataset.row = row;
+            input.dataset.col = col;
+            rowDiv.appendChild(input);
+        }
+        container.appendChild(rowDiv);
+    }
+}
 
 function newGame() {
     gotC=false; gotV=false;
-    answer = WORDS5[Math.floor(Math.random() * WORDS5.length)];
+
+    // ---- NEW: (re)build the grid for the current config, then pick answer ----
+    buildGrid();
+    answer = pickAnswer();
     console.log(answer);
+
     const inputs = document.querySelectorAll(".inputfield");
     inputs.forEach(input => {
         input.value = "";
@@ -51,7 +114,7 @@ function newGame() {
 }
 function game(ind){
     console.log("game with index ="+ind);
-    if(ind>6) {showMessage("Better luck next time! The word was: "+answer); return;}
+    if(ind>config.numGuesses) {showMessage("Better luck next time! The word was: "+answer); return;}
 
     let hash = new Array(26).fill(0);
     for (let i = 0; i < answer.length; i++) {
@@ -89,12 +152,12 @@ function game(ind){
             console.log(event.key);
             console.log(cntByRow[ind]);
             if (event.key === "Enter") {
-                if(cntByRow[ind]===5){
+                if(cntByRow[ind]===config.numLetters){
                     let hash = hashByRow[ind];
                     let green=0;
                     let colors = [];
 
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < config.numLetters; i++) {
                         if (answer[i] === inputs[i].value.toUpperCase()) {
                             colors[i] = { bg: '#55b44d', border: '2px solid #007233', letter: answer[i] };
                             hash[answer.charCodeAt(i) - 'A'.charCodeAt(0)]--;
@@ -116,7 +179,7 @@ function game(ind){
                     const flipDuration = 500; // must match CSS animation duration
                     const stagger = 300;      // delay between each tile starting its flip
 
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < config.numLetters; i++) {
                         setTimeout(() => {
                             inputs[i].classList.add("flip");
                             setTimeout(() => {
@@ -132,13 +195,13 @@ function game(ind){
                     }
 
                     setTimeout(() => {
-                        if (green === 5) {
+                        if (green === config.numLetters) {
                             showMessage("Correct!");
                             wonthegame = true;
                             return;
                         }
                         game(ind + 1);
-                    }, 4 * stagger + flipDuration + 100);
+                    }, (config.numLetters - 1) * stagger + flipDuration + 100);
                 }
                 else {
                     const row = document.querySelector(".guess" + ind);
@@ -204,10 +267,10 @@ function showConsonant(){
     if(gotC) return;
     if(answer!==""){
         let answeranswer=answer+answer;
-        let i = Math.floor(Math.random() * 5);;
+        let i = Math.floor(Math.random() * config.numLetters);;
         let x=i;
         let cons; let cb=false;
-        for(;i<(5+x);i++){
+        for(;i<(config.numLetters+x);i++){
             if(!(answeranswer[i]==='A'||answeranswer[i]==='E'||answeranswer[i]==='I'||answeranswer[i]==='O'||answeranswer[i]==='U')){
                 cb=true; cons=answeranswer[i];
             }
@@ -231,10 +294,10 @@ function showVowel(){
     if(gotV) return;
     let vow; let vb=false;
     if(answer!==""){
-        let i = Math.floor(Math.random() * 5);;
+        let i = Math.floor(Math.random() * config.numLetters);;
         let x=i;
         let answeranswer=answer+answer;
-        for(;i<(5+x);i++){
+        for(;i<(config.numLetters+x);i++){
             if(answeranswer[i]==='A'||answeranswer[i]==='E'||answeranswer[i]==='I'||answeranswer[i]==='O'||answeranswer[i]==='U'){
                 vb=true; vow=answeranswer[i];
                 console.log(vow);
@@ -250,9 +313,36 @@ function showVowel(){
 
 }
 
+// ---- NEW: read the letter/guess <select> values, apply them, rebuild + start ----
+// Patterns (staircase / checkboard) only make sense for the classic 5x6 board,
+// so picking a custom size here also disables those buttons.
+function applyCustomSettings(){
+    const numLetters = parseInt(document.getElementById("letterCount").value, 10);
+    const numGuesses = parseInt(document.getElementById("guessCount").value, 10);
+
+    applySettings(numLetters, numGuesses);
+
+    const isDefault = (numLetters === 5 && numGuesses === 6);
+    const staircaseBtn = document.querySelector(".staircasebtn");
+    const checkboardBtn = document.querySelector(".checkboardbtn");
+    if (staircaseBtn) staircaseBtn.disabled = !isDefault;
+    if (checkboardBtn) checkboardBtn.disabled = !isDefault;
+
+    const disp=document.querySelector(".modedisplay");
+    disp.style.display="none";
+
+    newGame();
+}
+
 
 
 function ModeShape(shape){
+    // ---- NEW: patterns only work on the classic 5 letter / 6 guess board ----
+    if(config.numLetters !== 5 || config.numGuesses !== 6){
+        showMessage("Patterns only available with 5 letters / 6 guesses");
+        return;
+    }
+
     const disp=document.querySelector(".modedisplay");
     disp.style.display="none";
 
@@ -266,6 +356,9 @@ function ModeShape(shape){
         const keyb=document.querySelector(".keyboard");
         keyb.style.opacity = "0";
         keyb.style.pointerEvents = "none";
+
+        // ---- NEW: hide the standard grid while a pattern mode is active ----
+        document.getElementById("guessesContainer").style.display = "none";
         mode=1;
     }
     else if(shape===2){
@@ -279,6 +372,9 @@ function ModeShape(shape){
         const keyb=document.querySelector(".keyboard");
         keyb.style.opacity = "0";
         keyb.style.pointerEvents = "none";
+
+        // ---- NEW: hide the standard grid while a pattern mode is active ----
+        document.getElementById("guessesContainer").style.display = "none";
         mode=2;
     }
 }
@@ -293,6 +389,9 @@ function ExitMode(){
 
         const figure=document.querySelectorAll(".box-row");
         figure.forEach(function(fig){fig.style.display="none";});
+
+        // ---- NEW: restore the standard grid ----
+        document.getElementById("guessesContainer").style.display = "";
     }
     else if(mode===2){
         const keyb=document.querySelector(".keyboard");
@@ -301,7 +400,11 @@ function ExitMode(){
 
         const figure=document.querySelectorAll(".checkboard .checkbox");
         figure.forEach(function(fig){fig.style.display="none";});
+
+        // ---- NEW: restore the standard grid ----
+        document.getElementById("guessesContainer").style.display = "";
     }
+    mode = 0;
 }
 
 
@@ -311,9 +414,12 @@ function ExitMode(){
 //////////////// TODO /////////////////////////
 //// add game modes finish
 //// add 3 themes
-//// store statistics, make statistics button work, Daily strea
+//// store statistics, make statistics button work, Daily streak
 //// valid dictionary guesses only
 //////////////////////////////////////////////
 
 
 //////// later we can store session using cookies or local storage to keep track of the number of games played, won, lost, and the current streak. We can also store the last played word to prevent repetition.
+
+// ---- NEW: kick off with default 5x6 tracking arrays sized before first newGame() call ----
+applySettings(config.numLetters, config.numGuesses);

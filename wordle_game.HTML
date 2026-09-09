@@ -20,49 +20,12 @@
 
         <div class="guesses">
             <!-- .no-cursor {caret-color: transparent;} -->
-            <div class="guess1">
-                <input id="let1g1" class="inputfield inputfield1" type="text" maxlength="1">
-                <input id="let2g1" class="inputfield inputfield1" type="text" maxlength="1">
-                <input id="let3g1" class="inputfield inputfield1" type="text" maxlength="1">
-                <input id="let4g1" class="inputfield inputfield1" type="text" maxlength="1">
-                <input id="let5g1" class="inputfield inputfield1" type="text" maxlength="1">
-            </div>
-            <div class="guess2">
-                <input id="let1g2" class ="inputfield inputfield2" type="text" maxlength="1">
-                <input id="let2g2" class="inputfield inputfield2" type="text" maxlength="1">
-                <input id="let3g2" class="inputfield inputfield2" type="text" maxlength="1">
-                <input id="let4g2" class="inputfield inputfield2" type="text" maxlength="1">
-                <input id="let5g2" class="inputfield inputfield2" type="text" maxlength="1">
-            </div>
-            <div class="guess3">
-                <input id="let1g3" class="inputfield inputfield3" type="text" maxlength="1">
-                <input id="let2g3" class="inputfield inputfield3"type="text" maxlength="1">
-                <input id="let3g3" class="inputfield inputfield3"type="text" maxlength="1">
-                <input id="let4g3" class="inputfield inputfield3"type="text" maxlength="1">
-                <input id="let5g3" class="inputfield inputfield3"type="text" maxlength="1">
-            </div>
-            <div class="guess4">
-                <input id="let1g4" class="inputfield inputfield4" type="text" maxlength="1">
-                <input id="let2g4" class="inputfield inputfield4" type="text" maxlength="1">
-                <input id="let3g4" class="inputfield inputfield4" type="text" maxlength="1">
-                <input id="let4g4" class="inputfield inputfield4" type="text" maxlength="1">
-                <input id="let5g4" class="inputfield inputfield4" type="text" maxlength="1">
-            </div>
-            <div class="guess5">
-                <input id="let1g5" class="inputfield inputfield5" type="text" maxlength="1">
-                <input id="let2g5" class="inputfield inputfield5"type="text" maxlength="1">
-                <input id="let3g5" class="inputfield inputfield5"type="text" maxlength="1">
-                <input id="let4g5" class="inputfield inputfield5"type="text" maxlength="1">
-                <input id="let5g5" class="inputfield inputfield5"type="text" maxlength="1">
-            </div>
-            <div class="guess6">
-                <input id="let1g6" class="inputfield inputfield6"type="text" maxlength="1">
-                <input id="let2g6" class="inputfield inputfield6"type="text" maxlength="1">
-                <input id="let3g6" class="inputfield inputfield6"type="text" maxlength="1">
-                <input id="let4g6" class="inputfield inputfield6"type="text" maxlength="1">
-                <input id="let5g6" class="inputfield inputfield6"type="text" maxlength="1">
-            </div>
-            
+
+            <!-- NEW: rows/inputs for this container are built dynamically by buildGrid() in wordle.js
+                 based on config.numLetters / config.numGuesses. It replaces the old hardcoded
+                 guess1..guess6 blocks so the grid size can change at runtime. -->
+            <div class="standard-grid" id="guessesContainer"></div>
+
             <!--staircase-->
             <div class="staircase">
                 <div class="box-row">
@@ -163,11 +126,12 @@
                     <button class="superhardbtn" onclick="ModeShape(3);">Super Hard</button>
                 </div>
                 <div class="numoflettersoptn">
-                    <label for="number">Select Number of Letters:</label>
-                    <select id="number">
+                    <!-- NEW: unique id (was duplicated "number" on both selects) -->
+                    <label for="letterCount">Select Number of Letters:</label>
+                    <select id="letterCount">
                         <option value="3">3</option>
                         <option value="4">4</option>
-                        <option value="5">5</option>
+                        <option value="5" selected>5</option>
                         <option value="6">6</option>
                         <option value="7">7</option>
                         <option value="8">8</option>
@@ -176,16 +140,19 @@
                     </select>
                 </div>
                 <div class="numofguessesoptn">
-                    <label for="number">Select Number of Guesses:</label>
-                    <select id="number">
+                    <!-- NEW: unique id (was duplicated "number" on both selects) -->
+                    <label for="guessCount">Select Number of Guesses:</label>
+                    <select id="guessCount">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <option value="6">6</option>
+                        <option value="6" selected>6</option>
                     </select>
                 </div>
+                <!-- NEW: applies the selected letter/guess counts, rebuilds the grid, starts a new game -->
+                <button class="applysettings" onclick="applyCustomSettings();">Apply &amp; Start</button>
                 <a class="exit" onclick="ExitMode()">exit current mode?</a>
             </div>
         </div>
